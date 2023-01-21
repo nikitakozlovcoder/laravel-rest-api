@@ -8,10 +8,16 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     public function Index(){
-        return User::all()->makeHidden('email_verified_at');
+        return User::all()->map(function ($user) {
+            return [
+                'email' => $user->email
+            ];
+        });
     }
 
     public function Show(User $user){
-        return $user->makeHidden('email_verified_at');
+        return [
+            'email' => $user->email
+        ];
     }
 }
