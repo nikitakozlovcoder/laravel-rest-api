@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
-
 class UserController extends Controller
 {
     public function Index(){
-        return User::all()->map(function ($user) {
-            return [
-                'email' => $user->email
-            ];
-        });
+        return UserResource::collection(User::all())->all();
     }
 
     public function Show(User $user){
-        return [
-            'email' => $user->email
-        ];
+        return new UserResource($user);
+    }
+
+    public function FindByEmail(string $email){
+        return new UserResource(User::whereEmail($email)->first());
     }
 }
